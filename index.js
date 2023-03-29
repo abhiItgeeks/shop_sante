@@ -3,9 +3,16 @@ const app = express()
 const port = 3000
 const axios = require('axios');
 require('dotenv').config();
-let shopURL = process.env.SHOP_URL;
-let shopPassword = process.env.SHOP_PASSWORD;
-let ThemeID = process.env.THEME_ID;
+const shopURL = process.env.SHOP_URL;
+const shopPassword = process.env.SHOP_PASSWORD;
+const ThemeID = process.env.THEME_ID;
+const bodyParser = require('body-parser')
+const cors = require('cors');
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "https://shopsante.ca");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.get('/', (req, res) => {
   res.send(shopPassword)
 })
@@ -18,7 +25,7 @@ app.get("/get-store-locations",async (req, res) => {
     await axios.request({
       method: 'get',
       maxBodyLength: Infinity,
-      url: shopURL+'/api/2023-01/themes/124112601155/assets.json?asset[key]=assets/store-locations.json',
+      url: `${shopURL}/api/2023-01/themes/${ThemeID}/assets.json?asset[key]=assets/store-locations.json`,
       headers: { 
         'X-Shopify-Access-Token': ''+shopPassword+''
       }
@@ -283,13 +290,12 @@ app.get("/get-single-order/:id", async (req, res) => {
 app.get("/fulfill-order/:id", async (req, res) => {
   const id = req.params.id;
   let fulfillment;
-  let order_id = `${id}`;
   await axios.request({
-    method: 'get',
+    method: 'post',
     maxBodyLength: Infinity,
-    url: shopURL+'/api/2023-01/themes/124112601155/assets.json?asset[key]=assets/store-locations.json',
+    url: `${shopURL}/api/2022-04/orders/${id}/fulfillments.json`,
     headers: { 
-      'X-Shopify-Access-Token': ''+shopPassword+''
+      'X-Shopify-Access-Token': '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'
     },
     data:{
       "fulfillment": {
