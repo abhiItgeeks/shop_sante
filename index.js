@@ -1,11 +1,12 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 8080
 const axios = require('axios');
 require('dotenv').config();
 const shopURL = process.env.SHOP_URL;
 const shopPassword = process.env.SHOP_PASSWORD;
 const ThemeID = process.env.THEME_ID;
+const locationId = process.env.LOACTION_ID;
 const bodyParser = require('body-parser')
 const cors = require('cors');
 app.use(function(req, res, next) {
@@ -13,12 +14,6 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-app.get('/', (req, res) => {
-  res.send(shopPassword)
-})
-app.get('/hello', (req, res) => {
-  res.send('Hello!')
-})
 app.get("/get-store-locations",async (req, res) => {
   let storeJson = '';
   try{
@@ -48,7 +43,7 @@ async function getStoreLocationsNative(){
     await await axios.request({
       method: 'get',
       maxBodyLength: Infinity,
-      url: shopURL+'/api/2023-01/themes/124112601155/assets.json?asset[key]=assets/store-locations.json',
+      url: shopURL+'/api/2023-01/themes/123647066179/assets.json?asset[key]=assets/store-locations.json',
       headers: { 
         'X-Shopify-Access-Token': ''+shopPassword+''
       }

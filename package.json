@@ -4,7 +4,8 @@
   "description": "orders_shop_sante",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "author": "itGeeks",
   "license": "ISC",
